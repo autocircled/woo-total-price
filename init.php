@@ -1,11 +1,18 @@
 <?php
 /**
  * Plugin Name: Product Total Price for WooCommerce
- * Plugin URI: 
+ * Plugin URI: https://wordpress.org/plugins/product-total-price-for-woocommerce/
  * Description: An addon for WooCommerce that will help visitors to understand the final product price when product's quantity changes.
- * Version: 1.0.0
  * Author: autocircle
  * Author URI: https://devhelp.us/
+ * 
+ * Version: 1.1.0
+ * Requires at least:    4.0.0
+ * Tested up to:         5.8
+ * WC requires at least: 3.0.0
+ * WC tested up to: 	 5.5.2
+ * 
+ * 
  * Text Domain: wc-total-price
  * Domain Path: /languages/
  *
