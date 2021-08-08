@@ -59,6 +59,10 @@ Yes allmost with all plugins and themes.
 == Changelog ==
 
 = 1.1.0 =
+* WooCommerce missing notice added
+* Tested with WP version 5.8
+* Tested with WC version 5.5.2
+* Code cleanup done
 
 = 1.0.0 =
 * Initial release!
