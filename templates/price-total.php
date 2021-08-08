@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.0
+ * @version 1.1.0
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -21,6 +21,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</span>
 		</p>
 		<?php 
-		echo apply_filters('wcptp_price_html', ob_get_clean(), $price_format, $currency_html, $price_html );
+		echo apply_filters( 'wcptp_price_html', ob_get_clean(), $price_format, $currency_html, $price_html );
 	?>
 </script>

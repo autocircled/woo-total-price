@@ -6,7 +6,7 @@
  * Author: autocircle
  * Author URI: https://devhelp.us/
  * 
- * Version: 1.1.0
+ * Version:              1.1.0
  * Requires at least:    4.0.0
  * Tested up to:         5.8
  * WC requires at least: 3.0.0
@@ -18,7 +18,7 @@
  *
  * @author autocircle
  * @package Product Total Price for WooCommerce
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -36,12 +36,13 @@ if ( !function_exists('is_plugin_active') ){
 }
 
 if ( ! is_plugin_active('woocommerce/woocommerce.php') ) {
+    add_action( 'admin_notices', 'wcptp_admin_notice_missing_main_plugin' );
     return;
 }
 
 if ( ! defined( 'WCPTP_VERSION' ) ) {
     
-    define( 'WCPTP_VERSION', '1.0.0');
+    define( 'WCPTP_VERSION', '1.1.0');
     
 }
 
@@ -77,9 +78,29 @@ if ( ! defined( 'WCPTP_BASE_URL' ) ) {
     
 }
 
+if ( ! function_exists( 'wcptp_admin_notice_missing_main_plugin' ) ){
+    /**
+     * If WooComerce not activated then show a warning message
+     * 
+     * @since 1.1.0
+     * @return void
+     */
+    function wcptp_admin_notice_missing_main_plugin(){
+        if ( isset( $_GET['activate'] ) ) unset( $_GET['activate'] );
+
+           $message = sprintf(
+                   esc_html__( '"%1$s" requires "%2$s" to be installed and activated.', 'wc-total-price' ),
+                   '<strong>' . esc_html__( 'Product Total Price for WooCommerce', 'wc-total-price' ) . '</strong>',
+                   '<strong><a href="' . esc_url( 'https://wordpress.org/plugins/woocommerce/' ) . '" target="_blank">' . esc_html__( 'WooCommerce', 'woocommerce' ) . '</a></strong>'
+           );
+
+           printf( '<div class="notice notice-error is-dismissible"><p>%1$s</p></div>', $message );
+
+    }
+}
+
 class WCPTP {
     protected static $_instance = null;
-    protected static $version = '1.2.1';
         
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
@@ -123,7 +144,7 @@ class WCPTP {
         $product = wc_get_product( $post->ID );
         
         if ( ! empty( $product ) ) {
-            wp_register_script( 'wcptp_script', plugin_dir_url( __FILE__ ) . 'assets/js/script.js', array( 'jquery', 'wp-util', 'wc-add-to-cart-variation' ), self::$version );
+            wp_register_script( 'wcptp_script', plugin_dir_url( __FILE__ ) . 'assets/js/script.js', array( 'jquery', 'wp-util', 'wc-add-to-cart-variation' ), WCPTP_VERSION );
             wp_enqueue_script( 'wcptp_script' );
             $wcptp_data = array(
                 'precision' 			=> wc_get_price_decimals(),
