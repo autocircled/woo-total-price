@@ -6,7 +6,7 @@
  * Author: autocircle
  * Author URI: https://devhelp.us/
  * 
- * Version:              1.1.0
+ * Version:              1.1.1
  * Requires at least:    4.0.0
  * Tested up to:         5.8
  * WC requires at least: 3.0.0
@@ -42,7 +42,7 @@ if ( ! is_plugin_active('woocommerce/woocommerce.php') ) {
 
 if ( ! defined( 'WCPTP_VERSION' ) ) {
     
-    define( 'WCPTP_VERSION', '1.1.0');
+    define( 'WCPTP_VERSION', '1.1.1');
     
 }
 
@@ -119,6 +119,7 @@ class WCPTP {
     
     public function wcptp_init() {
         if ( ! is_admin() ) {
+                include_once untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/includes/functions.php';
                 add_action( 'woocommerce_single_product_summary', array( $this, 'wcptp_total_product_price_html' ), 31 );
                 add_action( 'wp_enqueue_scripts', array( $this, 'load_script' ), 5 );
         }
@@ -127,7 +128,7 @@ class WCPTP {
     public function wcptp_total_product_price_html(){
         global $product;
         
-        if( $product->is_type( array( 'simple' ) ) ){
+        if( $product->is_type( array( 'simple', 'variable' ) ) ){
             echo self::total_price_div();
         }
     }
@@ -154,8 +155,7 @@ class WCPTP {
 				'product_type'			=> $product->get_type(),
 				'price'					=> $product->get_price()
             );
-            wp_localize_script( 'wcptp_script', 'wcptp_data', $wcptp_data );
-
+            wp_localize_script( 'wcptp_script', 'wcptp_data', apply_filters( 'wp_localize_wcptp_data', $wcptp_data, $product ) );
             $wcptp_tempates_path = untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/templates/';
 			$wcptp_price_template = apply_filters( 'wcptp_price_total_template_file', 'price-total.php', $product );
 			wc_get_template( $wcptp_price_template, array(), '', $wcptp_tempates_path );
