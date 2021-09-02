@@ -45,14 +45,12 @@
                                     ),
                         currency: 	wcptp_data.currency_symbol
                     } );
-                    console.log($template_html);
                 } catch (err) {
                     $template_html = '<p style="color:red;">Something is not right with your price-total.php template.</p>';
                 }
                 $template_html = $template_html.replace( '/*<![CDATA[*/', '' );
                 $template_html = $template_html.replace( '/*]]>*/', '' );
                 wcptp.$price_wrapper.html( $template_html );
-                // wcptp.$price_wrapper.html( "<h1>Mukul</h1>" );
             }
             
         };
@@ -105,9 +103,34 @@
                 negetiveSign = total < 0 ? "-" : "", 
                 intPart = parseInt( total = Math.abs(+total || 0).toFixed( precision )) + "", 
                 thousandSeparatorPosition = (thousandSeparatorPosition = intPart.length) > 3 ? thousandSeparatorPosition % 3 : 0;
-                console.log(total, intPart, thousandSeparatorPosition);
                 return negetiveSign + (thousandSeparatorPosition ? intPart.substr(0, thousandSeparatorPosition) + thousandSeparator : "") + intPart.substr( thousandSeparatorPosition ).replace(/(\d{3})(?=\d)/g, "$1" + thousandSeparator) + ( precision ? decimalSeparator + Math.abs(total - intPart).toFixed( precision ).slice(2) : "");
-            };
+        };
+
+        /**
+         * On show_variation calculate price and show preview
+         * for variation product only
+         */
+        $('div.quantity input[type=number]').attrchange({
+            trackValues: true, /* Default to false, if set to true the event object is 
+                        updated with old and new value.*/
+            callback: function (event) { 
+
+                setTimeout(function(){
+                    $('form.cart').find( '[name="quantity"]' ).trigger('input.price_total');
+                },100)
+            }        
+        });
+
+        /**
+         * For simple product price preview should display
+         */
+        (function(){
+            setTimeout(function(){
+                $('form.cart').find( '[name="quantity"]' ).trigger('input.price_total');
+            },100)
+        }());
+        
+
         
     });
 }(jQuery, window));

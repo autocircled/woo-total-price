@@ -58,6 +58,19 @@ Yes allmost with all plugins and themes.
 
 == Changelog ==
 
+= 1.1.1 =
+Release Date: September 3rd, 2021
+
+Added below features as per request of WordPress support topic https://wordpress.org/support/topic/variable-product-price-not-changing/
+
+Enhancements:
+
+* Variable product support
+
+Bug Fixes:
+
+* Total price preview loading automatically
+
 = 1.1.0 =
 * WooCommerce missing notice added
 * Tested with WP version 5.8

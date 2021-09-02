@@ -145,7 +145,10 @@ class WCPTP {
         $product = wc_get_product( $post->ID );
         
         if ( ! empty( $product ) ) {
-            wp_register_script( 'wcptp_script', plugin_dir_url( __FILE__ ) . 'assets/js/script.js', array( 'jquery', 'wp-util', 'wc-add-to-cart-variation' ), WCPTP_VERSION );
+            
+            wp_register_script( 'attr_change_script', plugin_dir_url( __FILE__ ) . 'assets/js/attrchange.js', array( 'jquery' ), WCPTP_VERSION, true );
+            wp_enqueue_script( 'attr_change_script' );
+            wp_register_script( 'wcptp_script', plugin_dir_url( __FILE__ ) . 'assets/js/script.js', array( 'jquery', 'wp-util', 'wc-add-to-cart-variation' ), WCPTP_VERSION, true );
             wp_enqueue_script( 'wcptp_script' );
             $wcptp_data = array(
                 'precision' 			=> wc_get_price_decimals(),
