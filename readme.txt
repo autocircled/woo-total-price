@@ -25,8 +25,8 @@ WooCommerce 3.0 or later.
 
 == Installation ==
 1. Visit Plugins > Add New
-2. Search for “WooCommerce Product Final Price”
-3. Activate WooCommerce Product Final Price from your Plugins page
+2. Search for "Product Total Price for WooCommerce"
+3. Activate "Product Total Price for WooCommerce" from your plugins page
 4. That's all
 
 
