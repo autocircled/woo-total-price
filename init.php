@@ -15,10 +15,6 @@
  * 
  * Text Domain: wc-total-price
  * Domain Path: /languages/
- *
- * @author autocircle
- * @package Product Total Price for WooCommerce
- * @version 1.1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -127,8 +123,10 @@ class WCPTP {
     
     public function wcptp_total_product_price_html(){
         global $product;
-        
-        if( $product->is_type( array( 'simple', 'variable' ) ) ){
+
+        $allowed_product_types = apply_filters( 'wcptp_allowed_product_type', array( 'simple', 'variable' ), $product );
+
+        if( $product->is_type( $allowed_product_types ) ){
             echo self::total_price_div();
         }
     }
