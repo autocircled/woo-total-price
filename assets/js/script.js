@@ -14,9 +14,22 @@
                     $form.find( '[name="quantity"]' ).trigger('input.price_total');
                 },100)
             } );
+
+            this.wcptp_variation();
         };
         wcptp.prototype.priceCalculator = function( event ){
-            this.product_totalPrice = this.qty * wcptp_data.price;
+            var wcptp = this;
+            price = false;
+            if ( typeof wcptp_data.price  === 'object' ) {
+                
+                if ( wcptp.current_product in wcptp_data.price ) {
+                    price = wcptp_data.price[wcptp.current_product];
+                }
+                wcptp.product_totalPrice = wcptp.qty * price;
+                
+            } else{
+                wcptp.product_totalPrice = wcptp.qty * wcptp_data.price;
+            }
         }
 
         wcptp.prototype.updatePrice_html = function ( event ) {
@@ -47,6 +60,26 @@
             event.data.wcptp.priceCalculator();
             event.data.wcptp.updatePrice_html();
         }
+
+        wcptp.prototype.wcptp_variation = function ( event ) {
+            if ( typeof wc_add_to_cart_variation_params !== 'undefined' ) {
+                var wcptp = this;
+                wcptp.$form.on( 'found_variation', function( event, variation ) {
+                    wcptp.current_product = variation.variation_id;
+                    wcptp.$form.find('.quantity input').trigger('input.preview_price');
+                });
+                // When the variation is hidden
+                wcptp.$form.on( 'hide_variation', function( event ) {
+                    wcptp.$price_wrapper.hide();
+                })
+                // When the variation is revealed
+                wcptp.$form.on( 'show_variation', function( event, variation, purchasable ) {
+                    wcptp.$price_wrapper.toggle(purchasable);
+                })
+                    
+                wcptp.$form.find('select').trigger('change');
+            }
+        };
         
         $(function() {
             if ( typeof wcptp_data !== 'undefined' ) {
@@ -70,9 +103,34 @@
                 negetiveSign = total < 0 ? "-" : "", 
                 intPart = parseInt( total = Math.abs(+total || 0).toFixed( precision )) + "", 
                 thousandSeparatorPosition = (thousandSeparatorPosition = intPart.length) > 3 ? thousandSeparatorPosition % 3 : 0;
-                console.log(total, intPart, thousandSeparatorPosition);
                 return negetiveSign + (thousandSeparatorPosition ? intPart.substr(0, thousandSeparatorPosition) + thousandSeparator : "") + intPart.substr( thousandSeparatorPosition ).replace(/(\d{3})(?=\d)/g, "$1" + thousandSeparator) + ( precision ? decimalSeparator + Math.abs(total - intPart).toFixed( precision ).slice(2) : "");
-            };
+        };
+
+        /**
+         * On show_variation calculate price and show preview
+         * for variation product only
+         */
+        $('div.quantity input[type=number]').attrchange({
+            trackValues: true, /* Default to false, if set to true the event object is 
+                        updated with old and new value.*/
+            callback: function (event) { 
+
+                setTimeout(function(){
+                    $('form.cart').find( '[name="quantity"]' ).trigger('input.price_total');
+                },100)
+            }        
+        });
+
+        /**
+         * For simple product price preview should display
+         */
+        (function(){
+            setTimeout(function(){
+                $('form.cart').find( '[name="quantity"]' ).trigger('input.price_total');
+            },100)
+        }());
+        
+
         
     });
 }(jQuery, window));

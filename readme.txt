@@ -2,9 +2,9 @@
 Contributors: autocircle
 Donate link: https://devhelp.us
 Tags: subtotal, price sub total, price preview, dynamic price, price display, woocommerce, total price, final price, price times quantity
-Requires at least: 3.8
-Tested up to: 5.7
-Stable tag: 1.0
+Requires at least: 4.0
+Tested up to: 5.8
+Stable tag: 1.1.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html	
 
@@ -25,8 +25,8 @@ WooCommerce 3.0 or later.
 
 == Installation ==
 1. Visit Plugins > Add New
-2. Search for “WooCommerce Product Final Price”
-3. Activate WooCommerce Product Final Price from your Plugins page
+2. Search for "Product Total Price for WooCommerce"
+3. Activate "Product Total Price for WooCommerce" from your plugins page
 4. That's all
 
 
@@ -58,6 +58,25 @@ Yes allmost with all plugins and themes.
 
 == Changelog ==
 
-= 1.0 =
+= 1.1.1 =
+Release Date: September 3rd, 2021
+
+Added below features as per request of WordPress support topic https://wordpress.org/support/topic/variable-product-price-not-changing/
+
+Enhancements:
+
+* Variable product support
+
+Bug Fixes:
+
+* Total price preview loading automatically
+
+= 1.1.0 =
+* WooCommerce missing notice added
+* Tested with WP version 5.8
+* Tested with WC version 5.5.2
+* Code cleanup done
+
+= 1.0.0 =
 * Initial release!
 

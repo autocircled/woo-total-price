@@ -1,17 +1,24 @@
 <?php
 /**
  * Plugin Name: Product Total Price for WooCommerce
- * Plugin URI: 
+ * Plugin URI: https://wordpress.org/plugins/product-total-price-for-woocommerce/
  * Description: An addon for WooCommerce that will help visitors to understand the final product price when product's quantity changes.
- * Version: 1.0.0
  * Author: autocircle
  * Author URI: https://devhelp.us/
+ * 
+ * Version:              1.1.1
+ * Requires at least:    4.0.0
+ * Tested up to:         5.8
+ * WC requires at least: 3.0.0
+ * WC tested up to: 	 5.5.2
+ * 
+ * 
  * Text Domain: wc-total-price
  * Domain Path: /languages/
  *
  * @author autocircle
  * @package Product Total Price for WooCommerce
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -29,12 +36,13 @@ if ( !function_exists('is_plugin_active') ){
 }
 
 if ( ! is_plugin_active('woocommerce/woocommerce.php') ) {
+    add_action( 'admin_notices', 'wcptp_admin_notice_missing_main_plugin' );
     return;
 }
 
 if ( ! defined( 'WCPTP_VERSION' ) ) {
     
-    define( 'WCPTP_VERSION', '1.0.0');
+    define( 'WCPTP_VERSION', '1.1.1');
     
 }
 
@@ -70,9 +78,29 @@ if ( ! defined( 'WCPTP_BASE_URL' ) ) {
     
 }
 
+if ( ! function_exists( 'wcptp_admin_notice_missing_main_plugin' ) ){
+    /**
+     * If WooComerce not activated then show a warning message
+     * 
+     * @since 1.1.0
+     * @return void
+     */
+    function wcptp_admin_notice_missing_main_plugin(){
+        if ( isset( $_GET['activate'] ) ) unset( $_GET['activate'] );
+
+           $message = sprintf(
+                   esc_html__( '"%1$s" requires "%2$s" to be installed and activated.', 'wc-total-price' ),
+                   '<strong>' . esc_html__( 'Product Total Price for WooCommerce', 'wc-total-price' ) . '</strong>',
+                   '<strong><a href="' . esc_url( 'https://wordpress.org/plugins/woocommerce/' ) . '" target="_blank">' . esc_html__( 'WooCommerce', 'woocommerce' ) . '</a></strong>'
+           );
+
+           printf( '<div class="notice notice-error is-dismissible"><p>%1$s</p></div>', $message );
+
+    }
+}
+
 class WCPTP {
     protected static $_instance = null;
-    protected static $version = '1.2.1';
         
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
@@ -91,6 +119,7 @@ class WCPTP {
     
     public function wcptp_init() {
         if ( ! is_admin() ) {
+                include_once untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/includes/functions.php';
                 add_action( 'woocommerce_single_product_summary', array( $this, 'wcptp_total_product_price_html' ), 31 );
                 add_action( 'wp_enqueue_scripts', array( $this, 'load_script' ), 5 );
         }
@@ -99,7 +128,7 @@ class WCPTP {
     public function wcptp_total_product_price_html(){
         global $product;
         
-        if( $product->is_type( array( 'simple' ) ) ){
+        if( $product->is_type( array( 'simple', 'variable' ) ) ){
             echo self::total_price_div();
         }
     }
@@ -116,7 +145,10 @@ class WCPTP {
         $product = wc_get_product( $post->ID );
         
         if ( ! empty( $product ) ) {
-            wp_register_script( 'wcptp_script', plugin_dir_url( __FILE__ ) . 'assets/js/script.js', array( 'jquery', 'wp-util', 'wc-add-to-cart-variation' ), self::$version );
+            
+            wp_register_script( 'attr_change_script', plugin_dir_url( __FILE__ ) . 'assets/js/attrchange.js', array( 'jquery' ), WCPTP_VERSION, true );
+            wp_enqueue_script( 'attr_change_script' );
+            wp_register_script( 'wcptp_script', plugin_dir_url( __FILE__ ) . 'assets/js/script.js', array( 'jquery', 'wp-util', 'wc-add-to-cart-variation' ), WCPTP_VERSION, true );
             wp_enqueue_script( 'wcptp_script' );
             $wcptp_data = array(
                 'precision' 			=> wc_get_price_decimals(),
@@ -126,8 +158,7 @@ class WCPTP {
 				'product_type'			=> $product->get_type(),
 				'price'					=> $product->get_price()
             );
-            wp_localize_script( 'wcptp_script', 'wcptp_data', $wcptp_data );
-
+            wp_localize_script( 'wcptp_script', 'wcptp_data', apply_filters( 'wp_localize_wcptp_data', $wcptp_data, $product ) );
             $wcptp_tempates_path = untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/templates/';
 			$wcptp_price_template = apply_filters( 'wcptp_price_total_template_file', 'price-total.php', $product );
 			wc_get_template( $wcptp_price_template, array(), '', $wcptp_tempates_path );
