@@ -32,3 +32,9 @@ if( !function_exists( 'wcptp_get_price' ) ){
         return $product->get_price();
     }
 }
+
+// This code block should be removed
+add_filter( 'wcptp_allowed_product_type', function( $types ){
+	$types[] = 'woosb';
+	return $types;
+}, 10 );

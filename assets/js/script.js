@@ -18,7 +18,7 @@
             this.wcptp_variation();
         };
         wcptp.prototype.priceCalculator = function( event ){
-            var wcptp = this;
+            var wcptp = this,
             price = false;
             if ( typeof wcptp_data.price  === 'object' ) {
                 
@@ -129,6 +129,13 @@
                 $('form.cart').find( '[name="quantity"]' ).trigger('input.price_total');
             },100)
         }());
+
+        // Compatible for WPC Product Bundles for WooCommerce (Premium)
+        $(document).on('woosb_calc_price', function(e, t){
+            // Get the updated price and set it to wcptp data price
+            wcptp_data.price = t;
+            $('form.cart').find( '[name="quantity"]' ).trigger('input.price_total');                
+        });
         
 
         

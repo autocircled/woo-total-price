@@ -6,7 +6,7 @@
  * Author: autocircle
  * Author URI: https://devhelp.us/
  * 
- * Version:              1.1.1
+ * Version:              1.1.2
  * Requires at least:    4.0.0
  * Tested up to:         5.9
  * WC requires at least: 3.0.0
@@ -38,7 +38,7 @@ if ( ! is_plugin_active('woocommerce/woocommerce.php') ) {
 
 if ( ! defined( 'WCPTP_VERSION' ) ) {
     
-    define( 'WCPTP_VERSION', '1.1.1');
+    define( 'WCPTP_VERSION', '1.1.2');
     
 }
 

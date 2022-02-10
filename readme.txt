@@ -67,6 +67,9 @@ The above code snippet will allow you to show the Total Product Price for almost
 
 == Changelog ==
 
+= 1.1.2 =
+* Fully compatible with WPC Product Bundles for WooCommerce plugin as per support issue https://wordpress.org/support/topic/variable-product-bundle/
+
 = 1.1.1 =
 Release Date: September 3rd, 2021
 
