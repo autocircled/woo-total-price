@@ -6,11 +6,11 @@
  * Author: autocircle
  * Author URI: https://devhelp.us/
  * 
- * Version:              1.1.2
+ * Version:              1.1.3
  * Requires at least:    4.0.0
- * Tested up to:         5.9
+ * Tested up to:         6.1.1
  * WC requires at least: 3.0.0
- * WC tested up to: 	 5.5.2
+ * WC tested up to: 	 7.2.0
  * 
  * 
  * Text Domain: wc-total-price
