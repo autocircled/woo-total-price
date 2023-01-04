@@ -6,19 +6,15 @@
  * Author: autocircle
  * Author URI: https://devhelp.us/
  * 
- * Version:              1.1.1
+ * Version:              1.1.3
  * Requires at least:    4.0.0
- * Tested up to:         5.8
+ * Tested up to:         6.1.1
  * WC requires at least: 3.0.0
- * WC tested up to: 	 5.5.2
+ * WC tested up to: 	 7.2.0
  * 
  * 
  * Text Domain: wc-total-price
  * Domain Path: /languages/
- *
- * @author autocircle
- * @package Product Total Price for WooCommerce
- * @version 1.1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -42,7 +38,7 @@ if ( ! is_plugin_active('woocommerce/woocommerce.php') ) {
 
 if ( ! defined( 'WCPTP_VERSION' ) ) {
     
-    define( 'WCPTP_VERSION', '1.1.1');
+    define( 'WCPTP_VERSION', '1.1.2');
     
 }
 
@@ -127,8 +123,10 @@ class WCPTP {
     
     public function wcptp_total_product_price_html(){
         global $product;
-        
-        if( $product->is_type( array( 'simple', 'variable' ) ) ){
+
+        $allowed_product_types = apply_filters( 'wcptp_allowed_product_type', array( 'simple', 'variable' ), $product );
+
+        if( $product->is_type( $allowed_product_types ) ){
             echo self::total_price_div();
         }
     }

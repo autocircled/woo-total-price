@@ -1,10 +1,11 @@
 === Product Total Price for WooCommerce ===
 Contributors: autocircle
 Donate link: https://devhelp.us
-Tags: subtotal, price sub total, price preview, dynamic price, price display, woocommerce, total price, final price, price times quantity
+Tags: subtotal, price sub total, price preview, dynamic price, price display, woocommerce, total price, final price, price times quantity, calculate price, price calculator
 Requires at least: 4.0
-Tested up to: 5.8
-Stable tag: 1.1.1
+Tested up to: 6.1.1
+Stable tag: 1.1.3
+Requires PHP: 5.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html	
 
@@ -51,12 +52,40 @@ This is an example that will change "Total Price" to "Order Total".
 = Will this work with other plugins of WooCommerce? =
 Yes allmost with all plugins and themes.
 
+= This plugin currently supports only 'simple' and 'variable' product types. Is there any way to support other product types? =
+Yes, that could be easily done by adding following code snippet to your theme's function.php file.
+`
+add_filter( 'wcptp_allowed_product_type', function( $types ){
+	$types[] = 'woosb';
+	return $types;
+}, 10 );
+`
+The above code snippet will allow you to show the Total Product Price for almost any types of products.
+
+= How to show prefix and suffix text of Total Price? 
+To show text as prefix and suffix of total price there are 02 filters. Use these filters to display your desired text.
+`
+apply_filters( 'wcptp_prefix', __return_false() );
+
+apply_filters( 'wcptp_suffix', __return_false() );
+`
+<strong>Example:</strong>
+`
+add_filter( 'wcptp_suffix', function(){
+	return "(excl. VAT)";
+});
+`
 == Screenshots ==
 
 1. Screenshot 1
 2. Screenshot 2
 
 == Changelog ==
+= 1.1.3 =
+* Added new filters to display prefix and suffix
+
+= 1.1.2 =
+* Fully compatible with WPC Product Bundles for WooCommerce plugin as per support issue https://wordpress.org/support/topic/variable-product-bundle/
 
 = 1.1.1 =
 Release Date: September 3rd, 2021
