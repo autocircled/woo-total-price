@@ -126,7 +126,9 @@ class WCPTP {
 
         $allowed_product_types = apply_filters( 'wcptp_allowed_product_type', array( 'simple', 'variable' ), $product );
 
-        if( $product->is_type( $allowed_product_types ) ){
+        $other_conditions = apply_filters( 'wcptp_any_other_condition', __return_true(), $product, $allowed_product_types );
+        
+        if( $product->is_type( $allowed_product_types ) && $other_conditions ){
             echo self::total_price_div();
         }
     }
