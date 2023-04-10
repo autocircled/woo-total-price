@@ -1,6 +1,6 @@
 === Product Total Price for WooCommerce ===
 Contributors: autocircle
-Donate link: https://devhelp.us
+Donate link: https://www.patreon.com/autocircle
 Tags: subtotal, price sub total, price preview, dynamic price, price display, woocommerce, total price, final price, price times quantity, calculate price, price calculator
 Requires at least: 4.0
 Tested up to: 6.2
