@@ -6,11 +6,11 @@
  * Author: autocircle
  * Author URI: https://devhelp.us/
  * 
- * Version:              1.1.3
+ * Version:              1.1.4
  * Requires at least:    4.0.0
- * Tested up to:         6.1.1
+ * Tested up to:         6.2
  * WC requires at least: 3.0.0
- * WC tested up to: 	 7.2.0
+ * WC tested up to: 	 7.5.1
  * 
  * 
  * Text Domain: wc-total-price
@@ -38,7 +38,7 @@ if ( ! is_plugin_active('woocommerce/woocommerce.php') ) {
 
 if ( ! defined( 'WCPTP_VERSION' ) ) {
     
-    define( 'WCPTP_VERSION', '1.1.2');
+    define( 'WCPTP_VERSION', '1.1.4');
     
 }
 
