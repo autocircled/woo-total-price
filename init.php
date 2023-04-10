@@ -116,7 +116,16 @@ class WCPTP {
     public function wcptp_init() {
         if ( ! is_admin() ) {
                 include_once untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/includes/functions.php';
-                add_action( 'woocommerce_single_product_summary', array( $this, 'wcptp_total_product_price_html' ), 31 );
+
+                $location_hooks = [ 'woocommerce_single_product_summary' ];
+
+                $location_hooks = apply_filters( 'wcptp_custom_location_by_action_hook', $location_hooks );
+                if ( is_array( $location_hooks ) ) {
+                    foreach( $location_hooks as $ahook ) {
+                        add_action( $ahook, array( $this, 'wcptp_total_product_price_html' ), 31 );
+                    }
+                }
+
                 add_action( 'wp_enqueue_scripts', array( $this, 'load_script' ), 5 );
         }
     }
