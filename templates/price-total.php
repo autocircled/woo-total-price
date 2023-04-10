@@ -18,14 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 		$suffix = $suffix_text ? '<span class="suffix">' . esc_html( $suffix_text ) . '</span>' : '';
 		ob_start();
 		?>
-		<p class="price product-final-price">
+		<span class="price product-final-price">
 			<span class="woocommerce-Price-amount amount">
 				<?php echo $price_label; ?>
 				<?php echo $prefix; ?>
 				<?php echo sprintf( $price_format, $currency_html, $price_html ); ?>
 				<?php echo $suffix; ?>
 			</span>
-		</p>
+		</span>
 		<?php 
 		echo apply_filters( 'wcptp_price_html', ob_get_clean(), $price_format, $currency_html, $price_html );
 	?>

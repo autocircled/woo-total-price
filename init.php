@@ -126,6 +126,8 @@ class WCPTP {
                     }
                 }
 
+                add_shortcode( 'WOO-TOTAL-PRICE', array( $this, 'wcptp_total_product_price_html' ) );
+
                 add_action( 'wp_enqueue_scripts', array( $this, 'load_script' ), 5 );
         }
     }
@@ -143,7 +145,7 @@ class WCPTP {
     }
     
     public static function total_price_div(){
-        return '<div class="wcptp-total-price"></div>';
+        return '<span class="wcptp-total-price"></span>';
     }
 
 
