@@ -6,11 +6,11 @@
  * Author: autocircle
  * Author URI: https://devhelp.us/
  * 
- * Version:              1.1.3
+ * Version:              1.1.4
  * Requires at least:    4.0.0
- * Tested up to:         6.1.1
+ * Tested up to:         6.2
  * WC requires at least: 3.0.0
- * WC tested up to: 	 7.2.0
+ * WC tested up to: 	 7.5.1
  * 
  * 
  * Text Domain: wc-total-price
@@ -38,7 +38,7 @@ if ( ! is_plugin_active('woocommerce/woocommerce.php') ) {
 
 if ( ! defined( 'WCPTP_VERSION' ) ) {
     
-    define( 'WCPTP_VERSION', '1.1.2');
+    define( 'WCPTP_VERSION', '1.1.4');
     
 }
 
@@ -116,7 +116,18 @@ class WCPTP {
     public function wcptp_init() {
         if ( ! is_admin() ) {
                 include_once untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/includes/functions.php';
-                add_action( 'woocommerce_single_product_summary', array( $this, 'wcptp_total_product_price_html' ), 31 );
+
+                $location_hooks = [ 'woocommerce_single_product_summary' ];
+
+                $location_hooks = apply_filters( 'wcptp_custom_location_by_action_hook', $location_hooks );
+                if ( is_array( $location_hooks ) ) {
+                    foreach( $location_hooks as $ahook ) {
+                        add_action( $ahook, array( $this, 'wcptp_total_product_price_html' ), 31 );
+                    }
+                }
+
+                add_shortcode( 'WOO-TOTAL-PRICE', array( $this, 'wcptp_total_product_price_html' ) );
+
                 add_action( 'wp_enqueue_scripts', array( $this, 'load_script' ), 5 );
         }
     }
@@ -126,13 +137,15 @@ class WCPTP {
 
         $allowed_product_types = apply_filters( 'wcptp_allowed_product_type', array( 'simple', 'variable' ), $product );
 
-        if( $product->is_type( $allowed_product_types ) ){
+        $other_conditions = apply_filters( 'wcptp_any_other_condition', __return_true(), $product, $allowed_product_types );
+        
+        if( $product->is_type( $allowed_product_types ) && $other_conditions ){
             echo self::total_price_div();
         }
     }
     
     public static function total_price_div(){
-        return '<div class="wcptp-total-price"></div>';
+        return '<span class="wcptp-total-price"></span>';
     }
 
 
